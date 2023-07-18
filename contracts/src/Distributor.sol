@@ -43,7 +43,8 @@ contract Distributor is ERC20 {
         );
         /**
          * TODO: Add checks to ensure that the proof is valid and that all of the data that you're 
-         *       trying to prove is also valid
+         *       trying to prove is also valid. You can also see what a sample ResponeTree looks like 
+         *       by looking at `sampleResponseTree.txt` in the root of the repo.
          */
 
     }

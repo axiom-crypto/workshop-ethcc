@@ -46,10 +46,11 @@ async function buildQuery() {
   }
 
   const qb = ax.newQueryBuilder();
-  await qb.append({
-    blockNumber: blockNumber,
-    address: walletAddress,
-  });
+  /**
+   * TODO: Append new QueryRows to create a Query that gets the nonce of the account at the blockNumber
+   * HINT: nonce is a property of an Account
+   */
+
   return qb;
 }
 
@@ -89,7 +90,7 @@ async function claimTokensTransaction(keccakQueryResponse: string) {
   if (!responseTree) {
     throw new Error("Response tree is undefined");
   }
-  const blockNumber = await getFirstTxBlockNumber(wallet);
+  const blockNumber = await getFirstTxBlockNumber(walletAddress);
 
   const keccakBlockResponse = responseTree.blockTree.getHexRoot();
   const keccakAccountResponse = responseTree.accountTree.getHexRoot();
@@ -108,9 +109,11 @@ async function claimTokensTransaction(keccakQueryResponse: string) {
     blockNumber,
     walletAddress
   ) as ValidationWitnessResponse;
-  if (witness.accountResponse) {
-    responses.accountResponses.push(witness.accountResponse);
-  }
+  /**
+   * TODO: Add the witness's appropriate response to the responses object
+   * HINT: We are interested in the nonce, which is a property of an Account
+   */
+  
 
   console.log(responses);
   
