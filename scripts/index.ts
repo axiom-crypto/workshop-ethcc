@@ -39,7 +39,7 @@ const ax = new Axiom(config);
 
 async function buildQuery() {
   // Get account age data from Provider
-  const blockNumber = await getFirstTxBlockNumber();
+  const blockNumber = await getFirstTxBlockNumber(walletAddress);
 
   if (isNaN(blockNumber)) {
     throw new Error("blockNumber is NaN");
@@ -89,7 +89,7 @@ async function claimTokensTransaction(keccakQueryResponse: string) {
   if (!responseTree) {
     throw new Error("Response tree is undefined");
   }
-  const blockNumber = await getFirstTxBlockNumber();
+  const blockNumber = await getFirstTxBlockNumber(wallet);
 
   const keccakBlockResponse = responseTree.blockTree.getHexRoot();
   const keccakAccountResponse = responseTree.accountTree.getHexRoot();
@@ -127,7 +127,7 @@ async function claimTokensTransaction(keccakQueryResponse: string) {
   console.log("Congrats! Now you have DST tokens!");
 }
 
-async function getFirstTxBlockNumber() {
+async function getFirstTxBlockNumber(address: string) {
   const res = await fetch(process.env.ALCHEMY_PROVIDER_URI_GOERLI as string, {
     method: "POST",
     headers: {
@@ -139,7 +139,7 @@ async function getFirstTxBlockNumber() {
       "method": "alchemy_getAssetTransfers",
       "params": [
         {
-          "fromAddress": "0xB392448932F6ef430555631f765Df0dfaE34efF3",
+          "fromAddress": address,
           "maxCount": "0x1",
           "excludeZeroValue": true,
           "category": [
