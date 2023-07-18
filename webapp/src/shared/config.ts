@@ -1,0 +1,5 @@
+export const Config = Object.freeze({
+  AXIOM_V1_QUERY_MAINNET_ADDR: "0xd617ab7f787adF64C2b5B920c251ea10Cd35a952",
+  Distributor_ADDR: "0x3CbbA4f0cb2B2fF6138370Eff10B8fa252B6a217",
+  NONCE_THRESHOLD: 16,
+})
