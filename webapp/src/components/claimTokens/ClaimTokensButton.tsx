@@ -4,19 +4,19 @@ import { Config } from "@/shared/config";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import DistributorAbi from '@/shared/abi/Distributor.json';
 
-interface MintDistributorButtonProps {
+interface ClaimTokensButtonProps {
   responses: any;
 }
 
-export default function MintDistributorButton(props: MintDistributorButtonProps) {
+export default function ClaimTokensButton(props: ClaimTokensButtonProps) {
   const { responses } = props;
   const { address } = useAccount();
 
   // Prepare the sendQuery transaction 
   const { config } = usePrepareContractWrite({
-    address: Config.Distributor_ADDR as `0x${string}`,
+    address: Config.DISTRIBUTOR_CONTRACT_ADDR as `0x${string}`,
     abi: DistributorAbi.abi,
-    functionName: 'mint',
+    functionName: 'claimTokens',
     args: [responses],
   })
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
@@ -25,7 +25,7 @@ export default function MintDistributorButton(props: MintDistributorButtonProps)
     return (
       <div className="flex flex-col items-center">
         <div className="text-2xl font-bold">
-          Distributor NFT Minted!
+          Distributor tokens claimed!
         </div>
         <div>
           Tx hash: { data?.hash }
@@ -43,7 +43,7 @@ export default function MintDistributorButton(props: MintDistributorButtonProps)
       }}
       className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 cursor-pointer"
     >
-      Mint Distributor NFT
+      Claim 5000 DFT
     </button>
   )
 }

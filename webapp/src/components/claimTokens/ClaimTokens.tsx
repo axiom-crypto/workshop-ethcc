@@ -1,13 +1,13 @@
 import { axiom } from "@/shared/axiom";
 import { Axiom, SolidityAccountResponse, SolidityBlockResponse, SolidityStorageResponse, ValidationWitnessResponse } from "@axiom-crypto/core";
-import MintDistributorButton from "./MintDistributorButton";
+import ClaimTokensButton from "./ClaimTokensButton";
 
-interface MintDistributorProps {
+interface ClaimTokensProps {
   address: string;
   keccakQueryResponse: string;
 }
 
-export default async function MintDistributor(props: MintDistributorProps) {
+export default async function ClaimTokens(props: ClaimTokensProps) {
   const { address, keccakQueryResponse } = props;
 
   const responseTree = await axiom.query.getResponseTreeForKeccakQueryResponse(keccakQueryResponse);
@@ -43,7 +43,7 @@ export default async function MintDistributor(props: MintDistributorProps) {
 
   return (
     <div>
-      <MintDistributorButton responses={responses} />
+      <ClaimTokensButton responses={responses} />
     </div>
   )
 }

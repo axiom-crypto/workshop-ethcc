@@ -1,22 +1,18 @@
 import { axiom } from '@/shared/axiom';
 import GenerateProofButton from './GenerateProofButton';
-import MintDistributor from '../mintDistributor/MintDistributor';
+import ClaimTokens from '../claimTokens/ClaimTokens';
 
 interface GenerateProofProps {
   address: string;
-  blockNumbers: number[];
+  blockNumber: number;
 }
 
 export default async function GenerateProof(props: GenerateProofProps) {
-  const { address, blockNumbers } = props;
+  const { address, blockNumber } = props;
 
   const qb = await axiom.newQueryBuilder();
   await qb.append({
-    blockNumber: blockNumbers[0],
-    address: address,
-  });
-  await qb.append({
-    blockNumber: blockNumbers[1],
+    blockNumber: blockNumber,
     address: address,
   });
   const { keccakQueryResponse, query } = await qb.build();
@@ -29,7 +25,7 @@ export default async function GenerateProof(props: GenerateProofProps) {
         axiomV1QueryAddress={axiom.getAxiomQueryAddress() as string}
         axiomV1QueryAbi={axiom.getAxiomQueryAbi()}
       >
-        <MintDistributor address={address} keccakQueryResponse={keccakQueryResponse} />
+        <ClaimTokens address={address} keccakQueryResponse={keccakQueryResponse} />
       </GenerateProofButton>
     </>
   )
