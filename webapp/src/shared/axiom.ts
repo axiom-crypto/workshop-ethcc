@@ -1,7 +1,7 @@
 import { Axiom, AxiomConfig } from "@axiom-crypto/core";
 
 const config: AxiomConfig = {
-  providerUri: process.env.PROVIDER_URI as string,
+  providerUri: process.env.ALCHEMY_PROVIDER_URI_GOERLI as string,
   version: "v1",
 };
 export const axiom = new Axiom(config);
