@@ -2,3 +2,4 @@
 .env
 .env.*
 response.txt
+node_modules
