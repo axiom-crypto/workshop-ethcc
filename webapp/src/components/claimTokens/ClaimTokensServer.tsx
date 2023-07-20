@@ -25,17 +25,12 @@ export default async function ClaimTokens(props: ClaimTokensProps) {
     accountResponses: [] as SolidityAccountResponse[],
     storageResponses: [] as SolidityStorageResponse[],
   };
-  const witness: ValidationWitnessResponse | undefined = axiom.query.getValidationWitness(
-    responseTree,
-    blockNumber,
-    address,
-  );
+  /**
+   * TODO: Get the ValidationWitness using `axiom.query.getValidationWitness` and then push 
+   *       the appropriate witness response into the responseData object that will be used to
+   *       send data into your contract to claim the NFT.
+   */
   
-  if (!witness) {
-    // You'll likely want to fail gracefully here instead of throwing.
-    throw new Error("Witnesses not found");
-  }
-  responseData.accountResponses.push(witness.accountResponse as SolidityAccountResponse);
 
   return (
     <div>

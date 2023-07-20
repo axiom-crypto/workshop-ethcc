@@ -10,13 +10,9 @@ interface GenerateProofProps {
 export default async function GenerateProof(props: GenerateProofProps) {
   const { blockNumber, address } = props;
 
-  // Build a new Query with Axiom QueryBuilder
-  const qb = await axiom.newQueryBuilder();
-  await qb.append({
-    blockNumber: blockNumber,
-    address: address,
-  });
-  const { keccakQueryResponse, query } = await qb.build();
+  /**
+   * TODO: Use your Axiom instance to build a Query
+   */
 
   return (
     <GenerateProofClient 

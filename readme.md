@@ -26,22 +26,16 @@ And the following script for deploying to your fork:
 ./script/local/deploy_local.sh
 ```
 
-## /scripts
-
-Contains a script that sends a historical data Query into the AxiomV1Query contract. Once the Zero Knowledge proof is generated, it calls the Distributor contact to receive tokens.
-
-Required .env file (must use Alchemy since we're using an Alchemy-specific JSON-RPC call):
-```
-ALCHEMY_PROVIDER_URI_GOERLI=
-PRIVATE_KEY=
-```
-
-Run via (must be in /scripts directory):
-
-```
-pnpm start
-```
-
 ## /webapp
 
 Simple web app in Next.js 13 (app router) that emulates all of the functionality as above but in a user-facing dApp.
+
+Required .env.local file:
+```
+ALCHEMY_PROVIDER_URI_GOERLI=
+```
+
+Run dev server
+```
+pnpm dev
+```

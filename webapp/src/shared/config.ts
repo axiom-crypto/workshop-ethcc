@@ -1,4 +1,7 @@
 export const Config = Object.freeze({
-  DISTRIBUTOR_CONTRACT_ADDR: "0x0130e18FF06682fDeFb57107906802d8039922D3",
+  /**
+   * TODO: Fill in the Distributor contract address that you deployed
+   */
+  DISTRIBUTOR_CONTRACT_ADDR: "",
   AGE_THRESHOLD: 250, // ~1 hour
 })
