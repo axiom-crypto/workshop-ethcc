@@ -3,12 +3,12 @@ import GenerateProofButton from './GenerateProofButton';
 import ClaimTokens from '../claimTokens/ClaimTokens';
 
 interface GenerateProofProps {
-  address: string;
   blockNumber: number;
+  address: string;
 }
 
 export default async function GenerateProof(props: GenerateProofProps) {
-  const { address, blockNumber } = props;
+  const { blockNumber, address } = props;
 
   const qb = await axiom.newQueryBuilder();
   await qb.append({
@@ -18,15 +18,13 @@ export default async function GenerateProof(props: GenerateProofProps) {
   const { keccakQueryResponse, query } = await qb.build();
 
   return (
-    <>
-      <GenerateProofButton 
-        keccakQueryResponse={keccakQueryResponse} 
-        query={query}
-        axiomV1QueryAddress={axiom.getAxiomQueryAddress() as string}
-        axiomV1QueryAbi={axiom.getAxiomQueryAbi()}
-      >
-        <ClaimTokens address={address} keccakQueryResponse={keccakQueryResponse} />
-      </GenerateProofButton>
-    </>
+    <GenerateProofButton 
+      keccakQueryResponse={keccakQueryResponse} 
+      query={query}
+      axiomV1QueryAddress={axiom.getAxiomQueryAddress() as string}
+      axiomV1QueryAbi={axiom.getAxiomQueryAbi()}
+    >
+      <ClaimTokens blockNumber={blockNumber} address={address} keccakQueryResponse={keccakQueryResponse} />
+    </GenerateProofButton>
   )
 }
