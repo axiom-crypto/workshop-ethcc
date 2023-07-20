@@ -45,3 +45,8 @@ pnpm start
 ## /webapp
 
 Simple web app in Next.js 13 (app router) that emulates all of the functionality as above but in a user-facing dApp.
+
+Run dev server
+```
+pnpm dev
+```
