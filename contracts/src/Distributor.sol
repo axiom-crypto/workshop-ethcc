@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import "../lib/openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "./interfaces/IAxiomV1Query.sol";
 
 struct ResponseStruct {
@@ -13,11 +13,11 @@ struct ResponseStruct {
     IAxiomV1Query.StorageResponse[] storageResponses;
 }
 
-contract Distributor is ERC20 {
-    uint256 public constant ACCOUNT_AGE_THRESHOLD = 5000;
+contract Distributor is ERC721Enumerable {
+    uint256 public constant ACCOUNT_AGE_THRESHOLD = 250;
     address public constant AXIOM_V1_QUERY_GOERLI_ADDR = 0x4Fb202140c5319106F15706b1A69E441c9536306;
 
-    mapping (address => bool) public hasClaimed;
+    mapping (address => bool) public hasMinted;
 
     error ProofError();
     error AlreadyClaimedError();
@@ -26,7 +26,7 @@ contract Distributor is ERC20 {
     error InvalidNonceError();
     error AccountAgeBelowThresholdError();
 
-    constructor() ERC20("Distributor", "DST") {}
+    constructor() ERC721("Distributor", "DST") {}
 
     function _validateData(ResponseStruct calldata response) private view {
         // Mainnet AxiomV1Query address
@@ -76,9 +76,9 @@ contract Distributor is ERC20 {
         }
     }
 
-    function claimTokens(ResponseStruct calldata response) external {
+    function claim(ResponseStruct calldata response) external {
         // Ensure current address has not yet claimed their tokens
-        if (hasClaimed[_msgSender()]) {
+        if (hasMinted[_msgSender()]) {
             revert AlreadyClaimedError();
         }
 
@@ -86,7 +86,7 @@ contract Distributor is ERC20 {
         _validateData(response);
         
         // Transfers tokens if ZK proof and data are valid
-        hasClaimed[_msgSender()] = true;
-        _mint(_msgSender(), 5000 * 10 ** decimals());
+        hasMinted[_msgSender()] = true;
+        _safeMint(_msgSender(), totalSupply());
     }
 }

@@ -15,7 +15,7 @@ export default async function ClaimTokens(props: ClaimTokensProps) {
   const keccakAccountResponse = responseTree.accountTree.getHexRoot();
   const keccakStorageResponse = responseTree.storageTree.getHexRoot();
 
-  const responses = {
+  const responseData = {
     keccakBlockResponse,
     keccakAccountResponse,
     keccakStorageResponse,
@@ -38,12 +38,12 @@ export default async function ClaimTokens(props: ClaimTokensProps) {
     // You'll likely want to fail gracefully here instead of throwing.
     throw new Error("Witnesses not found");
   }
-  responses.accountResponses.push(witness0.accountResponse as SolidityAccountResponse);
-  responses.accountResponses.push(witness1.accountResponse as SolidityAccountResponse);
+  responseData.accountResponses.push(witness0.accountResponse as SolidityAccountResponse);
+  responseData.accountResponses.push(witness1.accountResponse as SolidityAccountResponse);
 
   return (
     <div>
-      <ClaimTokensButton responses={responses} />
+      <ClaimTokensButton responseData={responseData} />
     </div>
   )
 }
