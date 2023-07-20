@@ -1,6 +1,6 @@
 import { axiom } from '@/shared/axiom';
-import GenerateProofButton from './GenerateProofButton';
-import ClaimTokens from '../claimTokens/ClaimTokens';
+import GenerateProofClient from './GenerateProofClient';
+import ClaimTokensServer from '../claimTokens/ClaimTokensServer';
 
 interface GenerateProofProps {
   blockNumber: number;
@@ -10,6 +10,7 @@ interface GenerateProofProps {
 export default async function GenerateProof(props: GenerateProofProps) {
   const { blockNumber, address } = props;
 
+  // Build a new Query with Axiom QueryBuilder
   const qb = await axiom.newQueryBuilder();
   await qb.append({
     blockNumber: blockNumber,
@@ -18,13 +19,18 @@ export default async function GenerateProof(props: GenerateProofProps) {
   const { keccakQueryResponse, query } = await qb.build();
 
   return (
-    <GenerateProofButton 
+    <GenerateProofClient 
       keccakQueryResponse={keccakQueryResponse} 
       query={query}
+      blockNumber={blockNumber}
       axiomV1QueryAddress={axiom.getAxiomQueryAddress() as string}
       axiomV1QueryAbi={axiom.getAxiomQueryAbi()}
     >
-      <ClaimTokens blockNumber={blockNumber} address={address} keccakQueryResponse={keccakQueryResponse} />
-    </GenerateProofButton>
+      <ClaimTokensServer 
+        blockNumber={blockNumber} 
+        address={address} 
+        keccakQueryResponse={keccakQueryResponse}
+      />
+    </GenerateProofClient>
   )
 }

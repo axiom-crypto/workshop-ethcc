@@ -3,17 +3,20 @@
 import { useAccount, useContractEvent, useContractRead, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { parseEther } from "viem";
 import { useEffect, useState } from "react";
+import Button from "../ui/Button";
+import Link from "next/link";
 
 interface GenerateProofButtonProps {
   keccakQueryResponse: string;
   query: string;
+  blockNumber: number;
   axiomV1QueryAddress: string;
   axiomV1QueryAbi: any;
   children: React.ReactNode;
 }
 
 export default function GenerateProofButton(props: GenerateProofButtonProps) {
-  const { keccakQueryResponse, query, axiomV1QueryAddress, axiomV1QueryAbi, children } = props;
+  const { keccakQueryResponse, query, blockNumber, axiomV1QueryAddress, axiomV1QueryAbi, children } = props;
   const { address } = useAccount();
   const [ proofGenerated, setProofGenerated ] = useState(false);
 
@@ -24,7 +27,7 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
     functionName: 'sendQuery',
     args: [keccakQueryResponse, address, query],
     value: parseEther("0.01"),
-  })
+  });
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
   // Check that the AxiomV1Query `queries` mapping doesn't already contain this `keccakQueryResponse`
@@ -59,7 +62,7 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
     }
     return (
       <div>
-        Transaction procesing...
+        Transaction processing...
       </div>
     )
   }
@@ -71,7 +74,8 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
     return (
       <div className="flex flex-col items-center">
         <div>
-          Proof successfully submitted to Axiom. Proof can take 1-3 minutes to generate...
+          Proof successfully submitted to Axiom. Proof can take 1-3 minutes to generate...<br />
+          See <Link href={`https://explorer.axiom.xyz/goerli/query/${keccakQueryResponse}`} target="_blank">Axiom Explorer (Goerli)</Link> for status.
         </div>
       </div>
     )
@@ -88,8 +92,11 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
     }
     return (
       <div className="flex flex-col items-center my-8 gap-2">
-        <div>
-          Proof has been generated.
+        <div className="font-bold text-highlight text-2xl">
+          ZK proof generated
+        </div>
+        <div className="w-1/2 text-center">
+          {`The proof that was generated tells us that your account ${address} had a nonce of 1 at block ${blockNumber}`}
         </div>
         { children }
       </div>
@@ -98,16 +105,14 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <button 
-        disabled={!write} 
+      <Button
+        disabled={!write}
         onClick={() => {
-          console.log("Write", write);
           write?.()
         }}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 cursor-pointer"
       >
-        {"Generate Proof (0.01 ETH)"}
-      </button>
+        { write ? "Generate Proof (0.01 ETH)" : "Proof already generated" }
+      </Button>
       { renderProofGenArea() }
     </div>
   )

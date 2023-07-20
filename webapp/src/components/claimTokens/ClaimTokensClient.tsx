@@ -1,8 +1,9 @@
 "use client";
 
 import { Config } from "@/shared/config";
-import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import DistributorAbi from '@/shared/abi/Distributor.json';
+import Button from "../ui/Button";
 
 interface ClaimTokensButtonProps {
   responseData: any;
@@ -10,22 +11,33 @@ interface ClaimTokensButtonProps {
 
 export default function ClaimTokensButton(props: ClaimTokensButtonProps) {
   const { responseData } = props;
-  const { address } = useAccount();
 
   // Prepare the claim transaction 
   const { config } = usePrepareContractWrite({
     address: Config.DISTRIBUTOR_CONTRACT_ADDR as `0x${string}`,
     abi: DistributorAbi.abi,
-    functionName: 'claimTokens',
+    functionName: 'claim',
     args: [responseData],
   })
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
-  console.log(data);
+  const { data, write } = useContractWrite(config);
+  
+  // Listen for transaction completion
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  })
+
+  if (isLoading) {
+    return (
+      <div>
+        Claiming Distributor NFT...
+      </div>
+    )
+  }
 
   if (isSuccess) {
     return (
       <div className="flex flex-col items-center">
-        <div className="text-2xl font-bold">
+        <div className="text-2xl text-highlight font-bold">
           Distributor NFT claimed!
         </div>
         <div>
@@ -36,15 +48,13 @@ export default function ClaimTokensButton(props: ClaimTokensButtonProps) {
   }
 
   return (
-    <button 
-      disabled={!write} 
+    <Button
+      disabled={!write}
       onClick={() => {
-        console.log("Mint Distributor");
-        write?.();
+        write?.()
       }}
-      className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 cursor-pointer"
     >
-      Claim Distributor NFT
-    </button>
+      { write ? "Claim Distributor NFT" : "Distributor NFT already claimed" }
+    </Button>
   )
 }

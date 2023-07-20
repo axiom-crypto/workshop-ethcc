@@ -9,6 +9,7 @@ import {
   useDisconnect,
   useEnsName,
 } from 'wagmi'
+import Button from './ui/Button';
  
 export default function ConnectWallet({ addressVerify }: { addressVerify: string}) {
   const router = useRouter();
@@ -34,30 +35,28 @@ export default function ConnectWallet({ addressVerify }: { addressVerify: string
 
   if (isConnected) {
     return (
-      <button 
+      <Button
         onClick={() => {
           disconnectWallet();
         }}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 cursor-pointer"
       >
         { ensName ? ensName : shortenAddress(address as string) }
-      </button>
+      </Button>
     )
   }
  
   return (
     <div>
       {connectors.map((connector) => (
-        <button
+        <Button
           disabled={!connector.ready}
           key={connector.id}
           onClick={() => {
             connect({ connector });
           }}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 cursor-pointer"
         >
-          {"Connect Wallet"}
-        </button>
+          { "Connect Wallet" }
+        </Button>
       ))}
  
       {error && <div>{error.message}</div>}

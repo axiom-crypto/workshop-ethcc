@@ -7,6 +7,3 @@ const config: AxiomConfig = {
   mock: true,
 };
 export const axiom = new Axiom(config);
-
-export const AXIOM_V1_QUERY_ADDRESS = axiom.getAxiomQueryAddress();
-export const AXIOM_V1_QUERY_ABI = axiom.getAxiomQueryAbi();

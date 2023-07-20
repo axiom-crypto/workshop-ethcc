@@ -1,6 +1,6 @@
-import { getFirstTxBlockNumber, getProof } from "@/shared/provider";
+import { getCurrentBlock, getFirstTxBlockNumber, getProof } from "@/shared/provider";
 import { Config } from "@/shared/config";
-import GenerateProof from "./generateProof/GenerateProof";
+import GenerateProofServer from "./generateProof/GenerateProofServer";
 
 interface NonceProps {
   address: string | undefined;
@@ -14,20 +14,28 @@ export default async function NonceCheck(props: NonceProps) {
 
   const blockNumber = await getFirstTxBlockNumber(address);
   if (blockNumber === undefined || isNaN(blockNumber)) {
-    return null;
+    return (
+      <div className="flex flex-col my-8 gap-2 items-center">
+        <div>
+          We were not able to find any transactions on your account.
+        </div>
+      </div>
+    );
   }
+
+  const currentBlock = await getCurrentBlock();
 
   const canClaim = () => {
     return (
       <div className="flex flex-col my-8 gap-2 items-center">
-        <div className="text-2xl font-bold">
+        <div className="text-2xl text-highlight font-bold">
           Congratulations!
         </div>
         <div>
           Your account is old enough to claim a Distributor NFT.
         </div>
         <div>
-          <GenerateProof address={address} blockNumber={blockNumber} />
+          <GenerateProofServer address={address} blockNumber={blockNumber} />
         </div>
       </div>
     )
@@ -46,7 +54,7 @@ export default async function NonceCheck(props: NonceProps) {
       <div>
         First transaction block: {blockNumber}
       </div>
-      { blockNumber - Config.AGE_THRESHOLD ? canClaim() : cannotClaim() }
+      { currentBlock - Config.AGE_THRESHOLD > blockNumber ? canClaim() : cannotClaim() }
     </div>
   )
 }

@@ -1,13 +1,18 @@
 import './globals.css'
+import satoshi from 'next/font/local';
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import Providers from './providers'
 
-const inter = Inter({ subsets: ['latin'] })
+const Satoshi = satoshi({
+  src: '../../public/fonts/Satoshi-Variable.ttf',
+  display: "swap",
+  weight: "500 700",
+  variable: "--font-satoshi",
+});
 
 export const metadata: Metadata = {
   title: 'Distributor',
-  description: 'Only the true Distributors may mint.',
+  description: 'Mint an NFT if your account is old enough.',
 }
 
 export default function RootLayout({
@@ -17,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${Satoshi.className} ${Satoshi.variable}`}>
         <Providers>
           {children}
         </Providers>

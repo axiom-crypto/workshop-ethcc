@@ -1,6 +1,13 @@
 import { JsonRpcProvider } from "ethers";
 import { numberToHex } from "./utils";
 
+export const getCurrentBlock = async (): Promise<number> => {
+  const providerUri = process.env.ALCHEMY_PROVIDER_URI_GOERLI as string;
+  const provider = new JsonRpcProvider(providerUri);
+  const blockNumber = await provider.getBlockNumber();
+  return blockNumber;
+}
+
 export const getProof = async (address: string, blockNumber: number): Promise<any> => {
   const providerUri = process.env.ALCHEMY_PROVIDER_URI_GOERLI as string;
   const provider = new JsonRpcProvider(providerUri);
@@ -11,7 +18,7 @@ export const getProof = async (address: string, blockNumber: number): Promise<an
 export const getTxBlocks = async (address: string, limit: number, asc: boolean): Promise<any[] | undefined> => {
   const limitHex = `0x${limit.toString(16)}`;
   const direction = asc ? "asc" : "desc";
-  console.log("getTxBlocks", address, limitHex, direction);
+
   const res = await fetch(process.env.ALCHEMY_PROVIDER_URI_GOERLI as string, {
     method: "POST",
     headers: {
