@@ -17,9 +17,9 @@ interface SearchParams {
 
 export default function Home({ searchParams }: PageProps) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col justify-center items-center p-24">
       <div className="flex flex-col items-center gap-4">
-        <div className="text-3xl font-bold items-center">
+        <div className="text-highlight text-3xl font-bold items-center">
           Distributor NFT
         </div>
         <div className="flex flex-col items-center gap-2">

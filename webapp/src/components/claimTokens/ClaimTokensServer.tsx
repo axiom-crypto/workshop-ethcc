@@ -1,6 +1,6 @@
 import { axiom } from "@/shared/axiom";
 import { SolidityAccountResponse, SolidityBlockResponse, SolidityStorageResponse, ValidationWitnessResponse } from "@axiom-crypto/core";
-import ClaimTokensButton from "./ClaimTokensButton";
+import ClaimTokensClient from "./ClaimTokensClient";
 
 interface ClaimTokensProps {
   blockNumber: number;
@@ -39,7 +39,7 @@ export default async function ClaimTokens(props: ClaimTokensProps) {
 
   return (
     <div>
-      <ClaimTokensButton responseData={responseData} />
+      <ClaimTokensClient responseData={responseData} />
     </div>
   )
 }
