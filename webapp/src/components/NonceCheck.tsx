@@ -1,6 +1,7 @@
-import { getCurrentBlock, getFirstTxBlockNumber, getProof } from "@/shared/provider";
+import { getCurrentBlock } from "@/shared/provider";
 import { Config } from "@/shared/config";
 import GenerateProofServer from "./generateProof/GenerateProofServer";
+import { getFirstTxBlockNumber } from "@/shared/etherscan";
 
 interface NonceProps {
   address: string | undefined;
