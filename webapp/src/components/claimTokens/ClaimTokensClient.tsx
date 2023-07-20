@@ -2,7 +2,7 @@
 
 import { Config } from "@/shared/config";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
-import DistributorAbi from '../../../../contracts/out/Distributor.sol/Distributor.json';
+import DistributorAbi from '@/shared/abi/Distributor.json';
 import Button from "../ui/Button";
 
 interface ClaimTokensButtonProps {
