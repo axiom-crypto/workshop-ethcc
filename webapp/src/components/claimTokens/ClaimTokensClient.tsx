@@ -2,7 +2,7 @@
 
 import { Config } from "@/shared/config";
 import { useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
-import DistributorAbi from '@/shared/abi/Distributor.json';
+import DistributorAbi from '../../../../contracts/out/Distributor.sol/Distributor.json';
 import Button from "../ui/Button";
 
 interface ClaimTokensButtonProps {
@@ -12,7 +12,7 @@ interface ClaimTokensButtonProps {
 export default function ClaimTokensButton(props: ClaimTokensButtonProps) {
   const { responseData } = props;
 
-  // Prepare the claim transaction 
+  // Prepare the claim transaction
   const { config } = usePrepareContractWrite({
     address: Config.DISTRIBUTOR_CONTRACT_ADDR as `0x${string}`,
     abi: DistributorAbi.abi,
