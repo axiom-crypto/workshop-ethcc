@@ -12,7 +12,7 @@ export default function ClaimTokensButton(props: ClaimTokensButtonProps) {
   const { responseData } = props;
   const { address } = useAccount();
 
-  // Prepare the sendQuery transaction 
+  // Prepare the claim transaction 
   const { config } = usePrepareContractWrite({
     address: Config.DISTRIBUTOR_CONTRACT_ADDR as `0x${string}`,
     abi: DistributorAbi.abi,

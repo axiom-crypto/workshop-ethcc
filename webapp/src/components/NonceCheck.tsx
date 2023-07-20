@@ -8,14 +8,11 @@ interface NonceProps {
 
 export default async function NonceCheck(props: NonceProps) {
   const { address } = props;
-  console.log("Addr", address);
   if (!address) {
     return null;
   }
 
-  // Get the block number of the first transaction for this address
   const blockNumber = await getFirstTxBlockNumber(address);
-  console.log("bn", blockNumber);
   if (blockNumber === undefined || isNaN(blockNumber)) {
     return null;
   }
@@ -47,7 +44,7 @@ export default async function NonceCheck(props: NonceProps) {
   return (
     <div className="flex flex-col items-center gap-0">
       <div>
-        Last transaction: {blockNumber}
+        First transaction block: {blockNumber}
       </div>
       { blockNumber - Config.AGE_THRESHOLD ? canClaim() : cannotClaim() }
     </div>

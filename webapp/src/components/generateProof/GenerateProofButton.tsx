@@ -17,7 +17,7 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
   const { address } = useAccount();
   const [ proofGenerated, setProofGenerated ] = useState(false);
 
-  // Prepare hook for the sendQuery transaction 
+  // Prepare hook for the sendQuery transaction
   const { config } = usePrepareContractWrite({
     address: axiomV1QueryAddress as `0x${string}`,
     abi: axiomV1QueryAbi,
@@ -35,10 +35,9 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
     args: [keccakQueryResponse],
   });
 
-  // Check that the AxiomV1Query hasn't already generated a proof for this `keccakQueryResponse`
+  // If the `keccakQueryResponse` has status 2 (Fulfilled), then the proof has been generated
   useEffect(() => {
-    if (queryExists?.[1] !== 0) {
-      console.log("queryExists", queryExists)
+    if (queryExists?.[1] === 2) {
       setProofGenerated(true);
     }
   }, [queryExists]);

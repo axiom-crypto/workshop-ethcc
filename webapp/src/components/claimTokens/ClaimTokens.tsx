@@ -16,7 +16,7 @@ export default async function ClaimTokens(props: ClaimTokensProps) {
   const keccakAccountResponse = responseTree.accountTree.getHexRoot();
   const keccakStorageResponse = responseTree.storageTree.getHexRoot();
 
-  // Build this response struct that we'll send to our own NFT contract.
+  // Build the responseData object that we'll send to our own NFT contract.
   const responseData = {
     keccakBlockResponse,
     keccakAccountResponse,
