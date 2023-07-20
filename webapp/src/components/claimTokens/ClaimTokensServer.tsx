@@ -33,7 +33,11 @@ export default async function ClaimTokens(props: ClaimTokensProps) {
   
   if (!witness) {
     // You'll likely want to fail gracefully here instead of throwing.
-    throw new Error("Witnesses not found");
+    return (
+      <div>
+        ValidationWitness not found for this query. This can happen if the keccakQueryResponse returns too early. Try refreshing the page.
+      </div>
+    )
   }
   responseData.accountResponses.push(witness.accountResponse as SolidityAccountResponse);
 
