@@ -1,20 +1,22 @@
 import { axiom } from "@/shared/axiom";
-import { Axiom, SolidityAccountResponse, SolidityBlockResponse, SolidityStorageResponse, ValidationWitnessResponse } from "@axiom-crypto/core";
+import { SolidityAccountResponse, SolidityBlockResponse, SolidityStorageResponse, ValidationWitnessResponse } from "@axiom-crypto/core";
 import ClaimTokensButton from "./ClaimTokensButton";
 
 interface ClaimTokensProps {
+  blockNumber: number;
   address: string;
   keccakQueryResponse: string;
 }
 
 export default async function ClaimTokens(props: ClaimTokensProps) {
-  const { address, keccakQueryResponse } = props;
+  const { blockNumber, address, keccakQueryResponse } = props;
 
   const responseTree = await axiom.query.getResponseTreeForKeccakQueryResponse(keccakQueryResponse);
   const keccakBlockResponse = responseTree.blockTree.getHexRoot();
   const keccakAccountResponse = responseTree.accountTree.getHexRoot();
   const keccakStorageResponse = responseTree.storageTree.getHexRoot();
 
+  // Build the responseData object that we'll send to our own NFT contract.
   const responseData = {
     keccakBlockResponse,
     keccakAccountResponse,
@@ -23,23 +25,17 @@ export default async function ClaimTokens(props: ClaimTokensProps) {
     accountResponses: [] as SolidityAccountResponse[],
     storageResponses: [] as SolidityStorageResponse[],
   };
-  const witness0: ValidationWitnessResponse | undefined = axiom.query.getValidationWitness(
+  const witness: ValidationWitnessResponse | undefined = axiom.query.getValidationWitness(
     responseTree,
-    6120000,
+    blockNumber,
     address,
   );
   
-  const witness1: ValidationWitnessResponse | undefined = axiom.query.getValidationWitness(
-    responseTree,
-    10430000,
-    address,
-  );
-  if (!witness0 || !witness1) {
+  if (!witness) {
     // You'll likely want to fail gracefully here instead of throwing.
     throw new Error("Witnesses not found");
   }
-  responseData.accountResponses.push(witness0.accountResponse as SolidityAccountResponse);
-  responseData.accountResponses.push(witness1.accountResponse as SolidityAccountResponse);
+  responseData.accountResponses.push(witness.accountResponse as SolidityAccountResponse);
 
   return (
     <div>

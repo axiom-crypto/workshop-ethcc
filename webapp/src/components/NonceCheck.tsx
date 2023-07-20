@@ -1,5 +1,4 @@
-import { JsonRpcProvider } from "ethers";
-import { getFirstTxBlockNumber } from "@/shared/provider";
+import { getFirstTxBlockNumber, getProof } from "@/shared/provider";
 import { Config } from "@/shared/config";
 import GenerateProof from "./generateProof/GenerateProof";
 
@@ -14,11 +13,9 @@ export default async function NonceCheck(props: NonceProps) {
     return null;
   }
 
-  const providerUri = process.env.ALCHEMY_PROVIDER_URI_GOERLI as string;
-  const provider = new JsonRpcProvider(providerUri);
   const blockNumber = await getFirstTxBlockNumber(address);
   
-  if (isNaN(blockNumber)) {
+  if (blockNumber === undefined || isNaN(blockNumber)) {
     return null;
   }
 
@@ -29,7 +26,7 @@ export default async function NonceCheck(props: NonceProps) {
           Congratulations!
         </div>
         <div>
-          Your account is old enough to claim Distributor tokens.
+          Your account is old enough to claim a Distributor NFT.
         </div>
         <div>
           <GenerateProof address={address} blockNumber={blockNumber} />
@@ -41,7 +38,7 @@ export default async function NonceCheck(props: NonceProps) {
   const cannotClaim = () => {
     return (
       <div>
-        Unfortunately, your account is not old enough to mint Distributor tokens.
+        Unfortunately, your account is not old enough to claim a Distributor NFT.
       </div>
     )
   }
@@ -49,7 +46,7 @@ export default async function NonceCheck(props: NonceProps) {
   return (
     <div className="flex flex-col items-center gap-0">
       <div>
-        First transaction: {blockNumber}
+        First transaction block: {blockNumber}
       </div>
       { blockNumber - Config.AGE_THRESHOLD ? canClaim() : cannotClaim() }
     </div>

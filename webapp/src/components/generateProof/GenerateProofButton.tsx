@@ -2,7 +2,7 @@
 
 import { useAccount, useContractEvent, useContractRead, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { parseEther } from "viem";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface GenerateProofButtonProps {
   keccakQueryResponse: string;
@@ -17,7 +17,7 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
   const { address } = useAccount();
   const [ proofGenerated, setProofGenerated ] = useState(false);
 
-  // Prepare the sendQuery transaction 
+  // Prepare hook for the sendQuery transaction
   const { config } = usePrepareContractWrite({
     address: axiomV1QueryAddress as `0x${string}`,
     abi: axiomV1QueryAbi,
@@ -35,13 +35,13 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
     args: [keccakQueryResponse],
   });
 
+  // If the `keccakQueryResponse` has status 2 (Fulfilled), then the proof has been generated
   useEffect(() => {
-    if (queryExists?.[1] !== 0) {
+    if (queryExists?.[1] === 2) {
       setProofGenerated(true);
     }
   }, [queryExists]);
   
-
   // Add listener for QueryFulfilled event
   useContractEvent({
     address: axiomV1QueryAddress as `0x${string}`,
@@ -89,7 +89,7 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
     return (
       <div className="flex flex-col items-center my-8 gap-2">
         <div>
-          Proof successfully generated.
+          Proof has been generated.
         </div>
         { children }
       </div>
@@ -106,7 +106,7 @@ export default function GenerateProofButton(props: GenerateProofButtonProps) {
         }}
         className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-100 cursor-pointer"
       >
-        Generate Proof
+        {"Generate Proof (0.01 ETH)"}
       </button>
       { renderProofGenArea() }
     </div>
