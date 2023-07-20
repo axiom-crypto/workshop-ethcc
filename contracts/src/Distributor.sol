@@ -14,7 +14,7 @@ struct ResponseStruct {
 }
 
 contract Distributor is ERC721Enumerable {
-    uint256 public constant ACCOUNT_NONCE_THRESHOLD = 2;
+    uint256 public constant ACCOUNT_AGE_THRESHOLD = 250;
     address public constant AXIOM_V1_QUERY_GOERLI_ADDR = 0x4Fb202140c5319106F15706b1A69E441c9536306;
 
     mapping (address => bool) public hasMinted;
