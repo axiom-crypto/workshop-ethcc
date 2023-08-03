@@ -1,5 +1,7 @@
 # Axiom Workshop (EthCC 2023)
 
+⚠️ This repository was used for an Axiom workshop at EthCC 2023. The `main` branch is incomplete and requires the developer to fill in some modules. To see the full working solution to this repository, go to the [examples](https://github.com/axiom-crypto/examples/tree/main/age-gate-mint) repository.
+
 The goal of this workshop is to get developers familar with using [Axiom](https://www.axiom.xyz) to generate Zero Knowledge proofs of Ethereum data that they can trustlessly use.
 
 We'll be building a simple ERC20 contract that utilizes 
